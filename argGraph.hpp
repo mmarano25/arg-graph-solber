@@ -6,35 +6,33 @@
 #include <map>
 #include <utility>
 
-// maps a node to the (set of nodes it attacks, set of node that attacks it)
-typedef std::string Node;
-typedef std::set<Node> nodeSet;
-typedef std::map<Node, std::pair<nodeSet, nodeSet>> attackMap;
 
 class argGraph {
+    
     public:
-        // Destructor/Constructors
-        ~argGraph   ();
-        argGraph    ();
+        typedef std::string Node;
+        typedef std::set<Node> nodeSet;
+        // maps a node to (set of nodes it attacks, set of nodes that attacks it)
+        typedef std::map<Node, std::pair<nodeSet, nodeSet>> attackMap;
 
         // Iterables?
 
         // Queries
-        bool        empty()                     const;
-        int         size()                      const;
-        std::string str()                       const;
-        int         outDegree()                 const;
-        int         inDegree()                  const;
-        nodeSet     attackers(Node node) const;
+        bool        empty()              const;
+        int         size()               const;
+        std::string str()                const;
+        int         outDegree(Node node);
+        int         inDegree(Node node);
+        nodeSet     attackers(Node node);
+        nodeSet     attacks(Node node);
 
         // Commands
-            // add_node takes an attack relation, (a, {b, c})
-                //TODO: for efficiency, make take a pointer to a set of strings
-        int  add_node   (Node node, nodeSet attacks);
-        int  add_attack (Node node, Node    attacks);
+            // add_node takes an attack relation, a attacks {b, c}
+        void add_node   (Node node, nodeSet &attacks);
+        void add_attack (Node node, Node    attacks);
         
     private:
-        attackMap attack_map;
+        attackMap _attack_map;
 };
 
 #endif /* ARG_GRAPH_HPP */
